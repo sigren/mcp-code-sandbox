@@ -23,3 +23,13 @@ class FileInterface(ABC):
     def write(self, file_path: str, content: str) -> None:
         """Write content to a file"""
         pass
+
+    @abstractmethod
+    def delete(self, file_path: str) -> None:
+        """Delete a file"""
+        pass
+
+    @abstractmethod
+    def stat(self, file_path: str) -> Dict[str, Any]:
+        """Get metadata for a file"""
+        pass

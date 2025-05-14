@@ -26,3 +26,16 @@ class E2BFileInterface(FileInterface):
     def write(self, file_path: str, content: str) -> None:
         """Write content to a file"""
         self._sandbox.files.write(file_path, content)
+
+    def delete(self, file_path: str) -> None:
+        """Delete a file from the sandbox"""
+        self._sandbox.filesystem.remove(file_path)
+
+    def stat(self, file_path: str) -> Dict[str, Any]:
+        """Get metadata for a file in the sandbox"""
+        file_info = self._sandbox.filesystem.info(file_path)
+        return {
+            "is_dir": file_info.is_dir,
+            "size": file_info.size,
+            # Add other relevant attributes from E2B's FileInfo if needed
+        }

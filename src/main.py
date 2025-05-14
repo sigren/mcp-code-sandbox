@@ -109,7 +109,7 @@ if __name__ == "__main__":
         logger.info("Available tools:")
         logger.info("  Sandbox administration: create_sandbox, close_sandbox, get_sandbox_status")
         logger.info("  Code execution: execute_code, install_package, create_run_close")
-        logger.info("  File operations: list_files, read_file, write_file, upload_file")
+        logger.info("  File operations: list_files, read_file, write_file, upload_file, delete_file, get_file_metadata")
         logger.info("  Telnet: connect, send_command, disconnect, list_connections")
         logger.info("  Chart generation: generate_line_chart, generate_bar_chart, generate_scatter_plot, generate_interactive_chart, generate_heatmap")
 

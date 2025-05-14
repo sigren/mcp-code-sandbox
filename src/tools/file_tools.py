@@ -131,16 +131,66 @@ class FileTools:
             except Exception as e:
                 logger.error(f"Error uploading file to sandbox {session_id}: {str(e)}")
                 return {"error": f"Error uploading file: {str(e)}"}
+
+        @mcp.tool()
+        async def delete_file(session_id: str, file_path: str) -> Dict[str, Any]:
+            """Delete a file in the sandbox.
+            
+            Args:
+                session_id: The unique identifier for the sandbox session
+                file_path: The path to the file to delete
+            
+            Returns:
+                A dictionary containing a success message or an error message
+            """
+            if session_id not in self.active_sandboxes:
+                return {"error": f"No sandbox found with session ID: {session_id}. Create a sandbox first."}
+            
+            interpreter = self.active_sandboxes[session_id]
+            
+            try:
+                interpreter.files.delete(file_path)
+                return {"path": file_path, "message": "File deleted successfully"}
+            except Exception as e:
+                logger.error(f"Error deleting file in sandbox {session_id}: {str(e)}")
+                return {"error": f"Error deleting file: {str(e)}"}
+
+        @mcp.tool()
+        async def get_file_metadata(session_id: str, file_path: str) -> Dict[str, Any]:
+            """Get metadata for a file in the sandbox.
+            
+            Args:
+                session_id: The unique identifier for the sandbox session
+                file_path: The path to the file to get metadata for
+            
+            Returns:
+                A dictionary containing the file metadata or an error message
+            """
+            if session_id not in self.active_sandboxes:
+                return {"error": f"No sandbox found with session ID: {session_id}. Create a sandbox first."}
+            
+            interpreter = self.active_sandboxes[session_id]
+            
+            try:
+                metadata = interpreter.files.stat(file_path)
+                return {"path": file_path, "metadata": metadata}
+            except Exception as e:
+                logger.error(f"Error getting file metadata in sandbox {session_id}: {str(e)}")
+                return {"error": f"Error getting file metadata: {str(e)}"}
                 
         # Make the functions available as class methods
         self.list_files = list_files
         self.read_file = read_file
         self.write_file = write_file
         self.upload_file = upload_file
+        self.delete_file = delete_file
+        self.get_file_metadata = get_file_metadata
         
         return {
             "list_files": list_files,
             "read_file": read_file,
             "write_file": write_file,
-            "upload_file": upload_file
+            "upload_file": upload_file,
+            "delete_file": delete_file,
+            "get_file_metadata": get_file_metadata
         }
